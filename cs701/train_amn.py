@@ -165,13 +165,12 @@ def run(args):
 
             for i, pack in enumerate(tqdm(val_data_loader)):
 
-                img_name = pack['name'][0]
                 img = pack['img']
                 label_cls = pack['label_cls'][0]
 
                 img = img.cuda()
 
-                logit = model(img,  pack['label_cls'].float().cuda())
+                logit = model(img, pack['label_cls'].cuda())
 
                 size = img.shape[-2:]
                 strided_up_size = imutils.get_strided_up_size(size, 16)
@@ -192,20 +191,19 @@ def run(args):
                 # gt_label = dataset.get_example_by_keys(i, (1,))[0]
 
                 # labels.append(gt_label.copy())
-                label_cls = pack['label_cls'].float().cuda(non_blocking=True)
-                labels.append(label_cls)
+                labels.append(pack['label'][0].int().cpu().numpy())
+            # import pdb; pdb.set_trace()
+            # confusion = calc_semantic_segmentation_confusion(preds, labels)
 
-            confusion = calc_semantic_segmentation_confusion(preds, labels)
+            # gtj = confusion.sum(axis=1)
+            # resj = confusion.sum(axis=0)
+            # gtjresj = np.diag(confusion)
+            # denominator = gtj + resj - gtjresj
+            # iou = gtjresj / denominator
 
-            gtj = confusion.sum(axis=1)
-            resj = confusion.sum(axis=0)
-            gtjresj = np.diag(confusion)
-            denominator = gtj + resj - gtjresj
-            iou = gtjresj / denominator
-
-            print(f'[{ep + 1}/{total_epochs}] miou: {np.nanmean(iou):.4f}')
+            # print(f'[{ep + 1}/{total_epochs}] miou: {np.nanmean(iou):.4f}')
 
             model.train()
 
-    torch.save(model.module.state_dict(), args.amn_weights_name + '.pth')
+    torch.save(model.module.state_dict(), args.amn_weights_name)
     torch.cuda.empty_cache()

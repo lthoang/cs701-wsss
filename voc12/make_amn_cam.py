@@ -80,12 +80,12 @@ def _work(process_id, model, dataset, args):
 def run(args):
     model = getattr(importlib.import_module(args.amn_network), 'CAM')()
 
-    model.load_state_dict(torch.load(args.amn_weights_name + '.pth'), strict=True)
+    model.load_state_dict(torch.load(args.amn_weights_name), strict=True)
     model.eval()
 
     n_gpus = torch.cuda.device_count()
 
-    dataset = voc12.dataloader.VOC12ClassificationDatasetMSF(args.train_list,
+    dataset = voc12.dataloader.ClassificationDatasetMSF(args.train_list,
                                                              voc12_root=args.voc12_root, scales=args.cam_scales)
     dataset = torchutils.split_dataset(dataset, n_gpus)
 

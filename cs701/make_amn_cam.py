@@ -80,7 +80,7 @@ def _work(process_id, model, dataset, args):
 def run(args):
     model = getattr(importlib.import_module(args.amn_network), 'CAM')()
 
-    model.load_state_dict(torch.load(args.amn_weights_name + '.pth'), strict=True)
+    model.load_state_dict(torch.load(args.amn_weights_name), strict=True)
     model.eval()
 
     n_gpus = torch.cuda.device_count()

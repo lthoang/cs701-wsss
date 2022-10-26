@@ -16,7 +16,7 @@ def _work(process_id, infer_dataset, args):
     infer_data_loader = DataLoader(databin, shuffle=False, num_workers=0, pin_memory=False)
 
     for iter, pack in enumerate(tqdm(infer_data_loader, position=process_id, desc=f'[PID{process_id}]')):
-        img_name = dataloader.decode_int_filename(pack['name'][0])
+        img_name = pack['name'][0]
         img = pack['img'][0].numpy()
         cam_dict = np.load(os.path.join(args.amn_cam_out_dir, img_name + '.npy'), allow_pickle=True).item()
 

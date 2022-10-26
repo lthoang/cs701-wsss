@@ -34,27 +34,6 @@ def validate(model, data_loader):
 
     return
 
-def export_prediction(model, data_loader, save_path='./label.txt'):
-    print('exporting prediction labels to file {} ... '.format(save_path), flush=True, end='')
-    model.eval()
-
-    result = {}
-    with torch.no_grad():
-        for pack in data_loader:
-            img = pack['img'].cuda(non_blocking=True)
-            filenames = pack['name']
-            x = model(img)
-            preds = (torch.sigmoid(x) > 0.5).to(torch.float32)
-            for filename, pred in zip(filenames, preds):
-                result[filename] = pred.nonzero().flatten().tolist()
-
-    with open(save_path, 'w') as f:
-        for fname, plabels in result.items():
-            f.write('{} {}\n'.format(fname, ' '.join([str(lb) for lb in plabels])))
-    return
-
-
-
 
 def run(args):
 
@@ -118,5 +97,5 @@ def run(args):
             validate(model, val_data_loader)
             timer.reset_stage()
 
-    torch.save(model.module.state_dict(), args.cam_weights_name + '.pth')
+    torch.save(model.module.state_dict(), args.cam_weights_name)
     torch.cuda.empty_cache()

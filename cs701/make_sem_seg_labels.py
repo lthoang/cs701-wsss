@@ -27,7 +27,7 @@ def _work(process_id, model, dataset, args):
         model.cuda()
 
         for iter, pack in enumerate(tqdm(data_loader, position=process_id, desc=f'[PID{process_id}]')):
-            img_name = dataloader.decode_int_filename(pack['name'][0])
+            img_name = pack['name'][0]
             orig_img_size = np.asarray(pack['size'])
 
             edge, dp = model(pack['img'][0].cuda(non_blocking=True))

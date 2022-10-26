@@ -46,7 +46,7 @@ def _work(process_id, infer_dataset, args):
                         conf.astype(np.uint8))
 
 def run(args):
-    dataset = voc12.dataloader.VOC12ImageDataset(args.train_list, voc12_root=args.voc12_root, img_normal=None, to_torch=False)
+    dataset = voc12.dataloader.ImageDataset(args.train_list, voc12_root=args.voc12_root, img_normal=None, to_torch=False)
     dataset = torchutils.split_dataset(dataset, args.num_workers)
 
     multiprocessing.spawn(_work, nprocs=args.num_workers, args=(dataset, args), join=True)

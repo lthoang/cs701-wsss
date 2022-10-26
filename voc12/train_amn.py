@@ -65,7 +65,7 @@ def run(args):
 
     model = getattr(importlib.import_module(args.amn_network), 'Net')()
 
-    train_dataset = voc12.dataloader.VOC12SegmentationDataset(args.train_list,
+    train_dataset = voc12.dataloader.SegmentationDataset(args.train_list,
                                                               label_dir=args.ir_label_out_dir,
                                                               voc12_root=args.voc12_root,
                                                               hor_flip=True,
@@ -77,7 +77,7 @@ def run(args):
     train_data_loader = DataLoader(train_dataset, batch_size=args.amn_batch_size,
                                    shuffle=True, num_workers=args.num_workers, pin_memory=True, drop_last=True)
 
-    val_dataset = voc12.dataloader.VOC12SegmentationDataset(args.infer_list,
+    val_dataset = voc12.dataloader.SegmentationDataset(args.infer_list,
                                                               label_dir=args.ir_label_out_dir,
                                                               voc12_root=args.voc12_root,
                                                               crop_size=None,
@@ -192,7 +192,7 @@ def run(args):
                 gt_label = dataset.get_example_by_keys(i, (1,))[0]
 
                 labels.append(gt_label.copy())
-
+            import pdb; pdb.set_trace()
             confusion = calc_semantic_segmentation_confusion(preds, labels)
 
             gtj = confusion.sum(axis=1)

@@ -19,15 +19,15 @@ if __name__ == '__main__':
 
     # Environment
     parser.add_argument("--num_workers", default=os.cpu_count()//2, type=int)
-    parser.add_argument("--dataset_root", required=True, type=str,
-                        help="Path to CS701 data")
+    parser.add_argument("--voc12_root", required=True, type=str,
+                        help="Path to VOC 2012 Devkit, must contain ./JPEGImages as subdirectory.")
 
     # Dataset
-    parser.add_argument("--train_list", default="/home/hoangle/cs701-wsss/public/split/0/train.txt", type=str)
-    parser.add_argument("--val_list", default="/home/hoangle/cs701-wsss/public/split/0/validation.txt", type=str)
-    parser.add_argument("--infer_list", default="/home/hoangle/cs701-wsss/public/val.txt", type=str,
-                        help="cs701/train_aug.txt to train a fully supervised model, "
-                             "cs701/train.txt or cs701/val.txt to quickly check the quality of the labels.")
+    parser.add_argument("--train_list", default="voc12/train_aug.txt", type=str)
+    parser.add_argument("--val_list", default="voc12/val.txt", type=str)
+    parser.add_argument("--infer_list", default="voc12/train.txt", type=str,
+                        help="voc12/train_aug.txt to train a fully supervised model, "
+                             "voc12/train.txt or voc12/val.txt to quickly check the quality of the labels.")
     parser.add_argument("--chainer_eval_set", default="train", type=str)
 
     # Class Activation Map
@@ -71,10 +71,9 @@ if __name__ == '__main__':
 
     # Output Path
     parser.add_argument("--log_name", default="sample_train_eval", type=str)
-    parser.add_argument("--cam_weights_name", default="sess-cs701/res50_cam.pth", type=str)
-    parser.add_argument("--amn_weights_name", default="sess-cs701/res50_amn.pth", type=str)
-    parser.add_argument("--irn_weights_name", default="sess-cs701/res50_irn.pth", type=str)
-    parser.add_argument("--output_label_path", default="result/label.txt", type=str)
+    parser.add_argument("--cam_weights_name", default="sess/res50_cam.pth", type=str)
+    parser.add_argument("--amn_weights_name", default="sess/res50_amn.pth", type=str)
+    parser.add_argument("--irn_weights_name", default="sess/res50_irn.pth", type=str)
 
     parser.add_argument("--cam_out_dir", default="result/cam", type=str)
     parser.add_argument("--ir_label_out_dir", default="result/ir_label", type=str)
@@ -85,7 +84,6 @@ if __name__ == '__main__':
 
     # Step
     parser.add_argument("--train_cam_pass", type=str2bool, default=False)
-    parser.add_argument("--infer_labels_pass", type=str2bool, default=False)
     parser.add_argument("--make_cam_pass", type=str2bool, default=False)
     parser.add_argument("--eval_cam_pass", type=str2bool, default=False)
     parser.add_argument("--cam_to_ir_label_pass", type=str2bool, default=False)
@@ -117,88 +115,82 @@ if __name__ == '__main__':
     print(vars(args))
 
     if args.train_cam_pass is True:
-        import cs701.train_cam
+        import voc12.train_cam
 
-        timer = pyutils.Timer('cs701.train_cam:')
-        cs701.train_cam.run(args)
-
-    if args.infer_labels_pass is True:
-        import cs701.infer_labels
-
-        timer = pyutils.Timer('cs701.infer_labels:')
-        cs701.infer_labels.run(args)
+        timer = pyutils.Timer('voc12.train_cam:')
+        voc12.train_cam.run(args)
 
     if args.make_cam_pass is True:
-        import cs701.make_cam
+        import voc12.make_cam
 
-        timer = pyutils.Timer('cs701.make_cam:')
-        cs701.make_cam.run(args)
+        timer = pyutils.Timer('voc12.make_cam:')
+        voc12.make_cam.run(args)
 
     if args.eval_cam_pass is True:
-        import cs701.eval_cam
+        import voc12.eval_cam
 
-        timer = pyutils.Timer('cs701.eval_cam:')
-        cs701.eval_cam.run(args)
+        timer = pyutils.Timer('voc12.eval_cam:')
+        voc12.eval_cam.run(args)
 
     if args.cam_to_ir_label_pass is True:
-        import cs701.cam_to_ir_label
+        import voc12.cam_to_ir_label
 
-        timer = pyutils.Timer('cs701.cam_to_ir_label:')
-        cs701.cam_to_ir_label.run(args)
+        timer = pyutils.Timer('voc12.cam_to_ir_label:')
+        voc12.cam_to_ir_label.run(args)
 
     #### AMN training process ####
 
     if args.train_amn_pass is True:
-        import cs701.train_amn
+        import voc12.train_amn
 
-        timer = pyutils.Timer('cs701.train_cam:')
-        cs701.train_amn.run(args)
+        timer = pyutils.Timer('voc12.train_cam:')
+        voc12.train_amn.run(args)
 
     if args.make_amn_cam_pass is True:
-        import cs701.make_amn_cam
+        import voc12.make_amn_cam
 
-        timer = pyutils.Timer('cs701.make_amn_cam:')
-        cs701.make_amn_cam.run(args)
+        timer = pyutils.Timer('voc12.make_cam:')
+        voc12.make_amn_cam.run(args)
 
     if args.eval_amn_cam_pass is True:
-        import cs701.eval_amn_cam
+        import voc12.eval_amn_cam
 
-        timer = pyutils.Timer('cs701.eval_amn_cam:')
-        cs701.eval_amn_cam.run(args)
+        timer = pyutils.Timer('voc12.eval_cam:')
+        voc12.eval_amn_cam.run(args)
 
     if args.amn_cam_to_ir_label_pass is True:
-        import cs701.amn_cam_to_ir_label
+        import voc12.amn_cam_to_ir_label
 
-        timer = pyutils.Timer('cs701.cam_to_ir_label:')
-        cs701.amn_cam_to_ir_label.run(args)
+        timer = pyutils.Timer('voc12.cam_to_ir_label:')
+        voc12.amn_cam_to_ir_label.run(args)
 
     if args.train_irn_pass is True:
-        import cs701.train_irn
+        import voc12.train_irn
 
-        timer = pyutils.Timer('cs701.train_irn:')
-        cs701.train_irn.run(args)
+        timer = pyutils.Timer('voc12.train_irn:')
+        voc12.train_irn.run(args)
 
     if args.make_ins_seg_pass is True:
-        import cs701.make_ins_seg_labels
+        import voc12.make_ins_seg_labels
 
-        timer = pyutils.Timer('cs701.make_ins_seg_labels:')
-        cs701.make_ins_seg_labels.run(args)
+        timer = pyutils.Timer('voc12.make_ins_seg_labels:')
+        voc12.make_ins_seg_labels.run(args)
 
     if args.eval_ins_seg_pass is True:
-        import cs701.eval_ins_seg
+        import voc12.eval_ins_seg
 
-        timer = pyutils.Timer('cs701.eval_ins_seg:')
-        cs701.eval_ins_seg.run(args)
+        timer = pyutils.Timer('voc12.eval_ins_seg:')
+        voc12.eval_ins_seg.run(args)
 
     if args.make_sem_seg_pass is True:
-        import cs701.make_sem_seg_labels
+        import voc12.make_sem_seg_labels
 
-        timer = pyutils.Timer('cs701.make_sem_seg_labels:')
-        cs701.make_sem_seg_labels.run(args)
+        timer = pyutils.Timer('voc12.make_sem_seg_labels:')
+        voc12.make_sem_seg_labels.run(args)
 
     if args.eval_sem_seg_pass is True:
-        import cs701.eval_sem_seg
+        import voc12.eval_sem_seg
 
-        timer = pyutils.Timer('cs701.eval_sem_seg:')
-        cs701.eval_sem_seg.run(args)
+        timer = pyutils.Timer('voc12.eval_sem_seg:')
+        voc12.eval_sem_seg.run(args)
 
