@@ -158,52 +158,52 @@ def run(args):
             pbar.set_description(f"[{ep + 1}/{total_epochs}] "
                                 f"PCL: [{avg_meter.pop('loss_pcl'):.4f}]")
     
-        with torch.no_grad():
-            model.eval()
-            labels = []
-            preds = []
+        # with torch.no_grad():
+        #     model.eval()
+        #     labels = []
+        #     preds = []
 
-            for i, pack in enumerate(tqdm(val_data_loader)):
+        #     for i, pack in enumerate(tqdm(val_data_loader)):
 
-                img = pack['img']
-                label_cls = pack['label_cls'][0]
+        #         img = pack['img']
+        #         label_cls = pack['label_cls'][0]
 
-                img = img.cuda()
+        #         img = img.cuda()
 
-                logit = model(img, pack['label_cls'].cuda())
+        #         logit = model(img, pack['label_cls'].cuda())
 
-                size = img.shape[-2:]
-                strided_up_size = imutils.get_strided_up_size(size, 16)
+        #         size = img.shape[-2:]
+        #         strided_up_size = imutils.get_strided_up_size(size, 16)
 
-                valid_cat = torch.nonzero(label_cls)[:, 0]
-                keys = np.pad(valid_cat + 1, (1, 0), mode='constant')
+        #         valid_cat = torch.nonzero(label_cls)[:, 0]
+        #         keys = np.pad(valid_cat + 1, (1, 0), mode='constant')
 
-                logit_up = F.interpolate(logit, strided_up_size, mode='bilinear', align_corners=False)
-                logit_up = logit_up[0, :, :size[0], :size[1]]
+        #         logit_up = F.interpolate(logit, strided_up_size, mode='bilinear', align_corners=False)
+        #         logit_up = logit_up[0, :, :size[0], :size[1]]
 
-                logit_up = F.softmax(logit_up, dim=0)[keys].cpu().numpy()
+        #         logit_up = F.softmax(logit_up, dim=0)[keys].cpu().numpy()
 
-                cls_labels = np.argmax(logit_up, axis=0)
-                cls_labels = keys[cls_labels]
+        #         cls_labels = np.argmax(logit_up, axis=0)
+        #         cls_labels = keys[cls_labels]
 
-                preds.append(cls_labels.copy())
+        #         preds.append(cls_labels.copy())
 
-                # gt_label = dataset.get_example_by_keys(i, (1,))[0]
+        #         # gt_label = dataset.get_example_by_keys(i, (1,))[0]
 
-                # labels.append(gt_label.copy())
-                labels.append(pack['label'][0].int().cpu().numpy())
-            # import pdb; pdb.set_trace()
-            # confusion = calc_semantic_segmentation_confusion(preds, labels)
+        #         # labels.append(gt_label.copy())
+        #         labels.append(pack['label'][0].int().cpu().numpy())
+        #     # import pdb; pdb.set_trace()
+        #     # confusion = calc_semantic_segmentation_confusion(preds, labels)
 
-            # gtj = confusion.sum(axis=1)
-            # resj = confusion.sum(axis=0)
-            # gtjresj = np.diag(confusion)
-            # denominator = gtj + resj - gtjresj
-            # iou = gtjresj / denominator
+        #     # gtj = confusion.sum(axis=1)
+        #     # resj = confusion.sum(axis=0)
+        #     # gtjresj = np.diag(confusion)
+        #     # denominator = gtj + resj - gtjresj
+        #     # iou = gtjresj / denominator
 
-            # print(f'[{ep + 1}/{total_epochs}] miou: {np.nanmean(iou):.4f}')
+        #     # print(f'[{ep + 1}/{total_epochs}] miou: {np.nanmean(iou):.4f}')
 
-            model.train()
+        #     model.train()
 
     torch.save(model.module.state_dict(), args.amn_weights_name)
     torch.cuda.empty_cache()

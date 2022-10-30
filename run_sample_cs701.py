@@ -74,14 +74,14 @@ if __name__ == '__main__':
     parser.add_argument("--cam_weights_name", default="sess-cs701/res50_cam.pth", type=str)
     parser.add_argument("--amn_weights_name", default="sess-cs701/res50_amn.pth", type=str)
     parser.add_argument("--irn_weights_name", default="sess-cs701/res50_irn.pth", type=str)
-    parser.add_argument("--output_label_path", default="result/label.txt", type=str)
+    parser.add_argument("--output_label_path", default="result/cs701/label.txt", type=str)
 
-    parser.add_argument("--cam_out_dir", default="result/cam", type=str)
-    parser.add_argument("--ir_label_out_dir", default="result/ir_label", type=str)
-    parser.add_argument("--amn_cam_out_dir", default="result/amn_cam", type=str)
-    parser.add_argument("--amn_ir_label_out_dir", default="result/amn_ir_label", type=str)
-    parser.add_argument("--sem_seg_out_dir", default="result/sem_seg", type=str)
-    parser.add_argument("--ins_seg_out_dir", default="result/ins_seg", type=str)
+    parser.add_argument("--cam_out_dir", default="result/cs701/cam", type=str)
+    parser.add_argument("--ir_label_out_dir", default="result/cs701/ir_label", type=str)
+    parser.add_argument("--amn_cam_out_dir", default="result/cs701/amn_cam", type=str)
+    parser.add_argument("--amn_ir_label_out_dir", default="result/cs701/amn_ir_label", type=str)
+    parser.add_argument("--sem_seg_out_dir", default="result/cs701/sem_seg", type=str)
+    parser.add_argument("--ins_seg_out_dir", default="result/cs701/ins_seg", type=str)
 
     # Step
     parser.add_argument("--train_cam_pass", type=str2bool, default=False)
@@ -103,7 +103,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    os.makedirs("sess", exist_ok=True)
+    os.makedirs("sess-cs701", exist_ok=True)
     os.makedirs(args.cam_out_dir, exist_ok=True)
     os.makedirs(args.ir_label_out_dir, exist_ok=True)
 
@@ -151,7 +151,7 @@ if __name__ == '__main__':
     if args.train_amn_pass is True:
         import cs701.train_amn
 
-        timer = pyutils.Timer('cs701.train_cam:')
+        timer = pyutils.Timer('cs701.train_amn:')
         cs701.train_amn.run(args)
 
     if args.make_amn_cam_pass is True:

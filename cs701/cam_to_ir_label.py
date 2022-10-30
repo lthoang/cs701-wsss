@@ -22,8 +22,8 @@ def _work(process_id, infer_dataset, args):
 
         cams = cam_dict['high_res']
         keys = np.pad(cam_dict['keys'] + 1, (1, 0), mode='constant')
-        print(keys.shape[0])
-        # print(img_name, cam_dict['keys'], keys)
+        if keys.shape[0] == 0:
+            continue
         # 1. find confident fg & bg
         fg_conf_cam = np.pad(cams, ((1, 0), (0, 0), (0, 0)), mode='constant', constant_values=args.conf_fg_thres)
         fg_conf_cam = np.argmax(fg_conf_cam, axis=0)

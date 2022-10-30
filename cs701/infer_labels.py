@@ -26,8 +26,8 @@ def export_prediction(model, data_loader, save_path='./label.txt'):
             preds = (torch.sigmoid(x) > 0.5).to(torch.float32)
             for filename, pred in zip(filenames, preds):
                 result[filename] = pred.nonzero().flatten().tolist()
-                if len(result[filename]) == 0:
-                    result[filename] = [0] # set this label by default
+                # if len(result[filename]) == 0:
+                #     result[filename] = [0] # set this label by default
 
     result = dict(sorted(result.items()))
     with open(save_path, 'w') as f:
