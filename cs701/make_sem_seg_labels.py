@@ -54,7 +54,7 @@ def _work(process_id, model, dataset, args):
 
 
 def run(args):
-    model = getattr(importlib.import_module(args.irn_network), 'EdgeDisplacement')()
+    model = getattr(importlib.import_module(args.irn_network), 'EdgeDisplacement')(crop_size=args.irn_crop_size)
     model.load_state_dict(torch.load(args.irn_weights_name), strict=False)
     model.eval()
 

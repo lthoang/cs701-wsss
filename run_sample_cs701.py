@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     # Class Activation Map
     parser.add_argument("--cam_network", default="net.resnet50_cam", type=str)
-    parser.add_argument("--cam_crop_size", default=512, type=int)
+    parser.add_argument("--cam_crop_size", default=768, type=int)
     parser.add_argument("--cam_batch_size", default=16, type=int)
     parser.add_argument("--cam_num_epoches", default=5, type=int)
     parser.add_argument("--cam_learning_rate", default=0.1, type=float)
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
     # AMN
     parser.add_argument("--amn_network", default="net.resnet50_amn", type=str)
-    parser.add_argument("--amn_crop_size", default=512, type=int)
+    parser.add_argument("--amn_crop_size", default=768, type=int)
     parser.add_argument("--amn_batch_size", default=16, type=int)
     parser.add_argument("--amn_num_epoches", default=5, type=int)
     parser.add_argument("--eps", default=0.4, type=float)
@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
     # Inter-pixel Relation Network (IRNet)
     parser.add_argument("--irn_network", default="net.resnet50_irn", type=str)
-    parser.add_argument("--irn_crop_size", default=512, type=int)
+    parser.add_argument("--irn_crop_size", default=768, type=int)
     parser.add_argument("--irn_batch_size", default=32, type=int)
     parser.add_argument("--irn_num_epoches", default=3, type=int)
     parser.add_argument("--irn_learning_rate", default=0.1, type=float)
@@ -169,7 +169,7 @@ if __name__ == '__main__':
     if args.amn_cam_to_ir_label_pass is True:
         import cs701.amn_cam_to_ir_label
 
-        timer = pyutils.Timer('cs701.cam_to_ir_label:')
+        timer = pyutils.Timer('cs701.amn_cam_to_ir_label:')
         cs701.amn_cam_to_ir_label.run(args)
 
     if args.train_irn_pass is True:

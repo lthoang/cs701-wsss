@@ -42,13 +42,13 @@ def run(args):
 
     train_dataset = dataloader.ClassificationDataset(args.train_list, dataset_root=args.dataset_root,
                                                                 resize_long=(320, 640), hor_flip=True,
-                                                                crop_size=512, crop_method="random")
+                                                                crop_size=768, crop_method="random")
     train_data_loader = DataLoader(train_dataset, batch_size=args.cam_batch_size,
                                    shuffle=True, num_workers=args.num_workers, pin_memory=True, drop_last=True)
     max_step = (len(train_dataset) // args.cam_batch_size) * args.cam_num_epoches
 
     val_dataset = dataloader.ClassificationDataset(args.val_list, dataset_root=args.dataset_root,
-                                                              crop_size=512)
+                                                              crop_size=768)
     val_data_loader = DataLoader(val_dataset, batch_size=args.cam_batch_size,
                                  shuffle=False, num_workers=args.num_workers, pin_memory=True, drop_last=True)
 

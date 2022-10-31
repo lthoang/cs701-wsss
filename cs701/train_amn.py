@@ -78,15 +78,15 @@ def run(args):
     train_data_loader = DataLoader(train_dataset, batch_size=args.amn_batch_size,
                                    shuffle=True, num_workers=args.num_workers, pin_memory=True, drop_last=True)
 
-    val_dataset = dataloader.SegmentationDataset(args.infer_list,
-                                                              label_dir=args.ir_label_out_dir,
-                                                              dataset_root=args.dataset_root,
-                                                              crop_size=None,
-                                                              crop_method="none",
-                                                             )
+    # val_dataset = dataloader.SegmentationDataset(args.infer_list,
+    #                                                           label_dir=args.ir_label_out_dir,
+    #                                                           dataset_root=args.dataset_root,
+    #                                                           crop_size=None,
+    #                                                           crop_method="none",
+    #                                                          )
 
-    val_data_loader = DataLoader(val_dataset, batch_size=1,
-                                   shuffle=False, num_workers=args.num_workers, pin_memory=True, drop_last=False)
+    # val_data_loader = DataLoader(val_dataset, batch_size=1,
+    #                                shuffle=False, num_workers=args.num_workers, pin_memory=True, drop_last=False)
 
     param_groups = model.trainable_parameters()
 
@@ -192,7 +192,7 @@ def run(args):
 
         #         # labels.append(gt_label.copy())
         #         labels.append(pack['label'][0].int().cpu().numpy())
-        #     # import pdb; pdb.set_trace()
+
         #     # confusion = calc_semantic_segmentation_confusion(preds, labels)
 
         #     # gtj = confusion.sum(axis=1)

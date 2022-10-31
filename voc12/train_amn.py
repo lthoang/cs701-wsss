@@ -192,7 +192,7 @@ def run(args):
                 gt_label = dataset.get_example_by_keys(i, (1,))[0]
 
                 labels.append(gt_label.copy())
-            import pdb; pdb.set_trace()
+
             confusion = calc_semantic_segmentation_confusion(preds, labels)
 
             gtj = confusion.sum(axis=1)
